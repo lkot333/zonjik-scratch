@@ -1,3 +1,4 @@
+
 name: CI
 
 on:
@@ -37,7 +38,6 @@ jobs:
       - name: Debug Info
         # https://docs.github.com/en/actions/reference/security/secure-use#use-an-intermediate-environment-variable
         env:
-          # `env:` values are printed to the log even without using them in `run:`
           GH_CONTEXT: ${{ toJson(github) }}
           SCRATCH_ENV: ${{ vars.SCRATCH_ENV || '<none>' }}
         run: |
@@ -70,7 +70,6 @@ jobs:
       - if: ${{ steps.filter.outputs.any-workspace == 'true' }}
         uses: ./.github/actions/install-dependencies
 
-      # TODO: Packages currently depend on each other's compiled dist at build time. Fix that and matrix the builds.
       - name: Build Packages
         if: ${{ steps.filter.outputs.any-workspace == 'true' }}
         run: npm run build
@@ -90,6 +89,10 @@ jobs:
     name: Test
     needs: build
     if: ${{ needs.build.outputs.any-workspace == 'true' && needs.build.outputs.packages != '[]' }}
+    permissions:
+      checks: write
+      issues: read
+      pull-requests: write
     uses: ./.github/workflows/test-packages.yml
     with:
       packages: ${{ needs.build.outputs.packages }}
@@ -97,13 +100,11 @@ jobs:
   preview:
     name: Preview
     needs: build
-    # We don't want to give forks free reign to publish to our GitHub Pages, so run this job only if both:
-    # - any workspace changed (otherwise there's no work to do)
-    # - and either
-    #   - this is not a PR (so it's some other event that happened in our fork, like a push or merge group)
-    #   - or it's a PR from our fork (not some other fork)
-    # - and
-    #   - it's not a Renovate branch (just to reduce noise)
+    # We don't want to give forks free reign to publish to our GitHub Pages
+    # so run this job only if both:
+    # - any workspace changed
+    # - and either this is not a PR or it's a PR from our fork
+    # - and it's not a Renovate branch
     if: ${{
         (needs.build.outputs.any-workspace == 'true') &&
         (
@@ -114,7 +115,5 @@ jobs:
       }}
     uses: ./.github/workflows/deploy-playground-preview.yml
     with:
-      # even `develop` should be published to a subdirectory
-      # that way each branch can be updated or cleaned up independently
       destination_dir: ${{ github.head_ref || github.ref_name }}
       full_commit_message: "Build for ${{ github.sha }} ${{ github.event.head_commit.message }}"
