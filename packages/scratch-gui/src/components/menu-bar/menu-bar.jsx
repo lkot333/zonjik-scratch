@@ -73,8 +73,6 @@ import oldtimeyLogo from './oldtimey-logo.svg';
 
 import sharedMessages from '../../lib/shared-messages';
 
-import {AccountMenuOptionsPropTypes} from '../../lib/account-menu-options';
-import AccountMenu from './account-menu.jsx';
 
 const ariaMessages = defineMessages({
     tutorials: {
@@ -313,7 +311,7 @@ class MenuBar extends React.Component {
             </Button>
         );
 
-        const menuOpts = this.props.accountMenuOptions;
+        
 
         return (
             <Box
@@ -504,7 +502,6 @@ class MenuBar extends React.Component {
 }
 
 MenuBar.propTypes = {
-    accountMenuOpen: PropTypes.bool,
     ariaLabel: PropTypes.string,
     ariaRole: PropTypes.string,
     authorId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -577,7 +574,6 @@ MenuBar.propTypes = {
     avatarBadge: PropTypes.number,
     userOwnsProject: PropTypes.bool,
 
-    accountMenuOptions: AccountMenuOptionsPropTypes,
 
     vm: PropTypes.instanceOf(VM).isRequired
 };
@@ -617,20 +613,6 @@ const mapStateToProps = (state, ownProps) => {
             ownProps.authorUsername && user && (ownProps.authorUsername === user.username)
         ),
 
-        accountMenuOptions: ownProps.accountMenuOptions ?? {
-            canHaveSession: sessionExists ?? false,
-
-            canRegister: true,
-            canLogin: true,
-            canLogout: true,
-
-            avatarUrl: user?.thumbnailUrl,
-            myStuffUrl: '/mystuff/',
-            profileUrl: user && `/users/${user.username}`,
-            myClassesUrl: permissions?.educator ? '/educators/classes/' : null,
-            myClassUrl: user && permissions?.student ? `/classes/${user.classroomId}/` : null,
-            accountSettingsUrl: '/accounts/settings/'
-        }
     };
 };
 
