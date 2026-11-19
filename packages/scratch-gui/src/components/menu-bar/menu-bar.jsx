@@ -65,7 +65,7 @@ import dropdownCaret from './dropdown-caret.svg';
 import debugIcon from '../debug-modal/icons/icon--debug.svg';
 
 import scratchLogo from './zonjikblocks.png';
-import scratchLogoAndroid from './scratch-logo-android.svg';
+import scratchLogoAndroid from './zonjikblocks.png.svg';
 import ninetiesLogo from './nineties_logo.svg';
 import catLogo from './cat_logo.svg';
 import prehistoricLogo from './prehistoric-logo.svg';
@@ -339,7 +339,7 @@ class MenuBar extends React.Component {
                                     [styles.clickable]: typeof this.props.onClickLogo !== 'undefined'
                                 })}
                                 draggable={false}
-                                src={getScratchLogo(this.props.platform)}
+                                src="./zonjikblocks.png"
                             />
                         </button>
                         {(this.props.canChangeColorMode || this.props.canChangeLanguage || this.props.canChangeTheme) &&
@@ -490,142 +490,7 @@ class MenuBar extends React.Component {
 
                 {/* show the proper UI in the account menu, given whether the user is
                 logged in, and whether a session is available to log in with */}
-                <div className={styles.accountInfoGroup}>
-                    <div className={styles.menuBarItem}>
-                        {this.props.canSave && (
-                            <SaveStatus className={classNames(styles.hoverable, styles.menuBarItem)} />
-                        )}
-                    </div>
-
-                    {menuOpts.canHaveSession ? (
-                        this.props.username ? (
-                            // ************ user is logged in ************
-                            <React.Fragment>
-                                {menuOpts.myStuffUrl ? (
-                                    <a
-                                        href={menuOpts.myStuffUrl}
-                                        aria-label={this.props.intl.formatMessage(ariaMessages.myStuff)}
-                                    >
-                                        <div
-                                            className={classNames(
-                                                styles.menuBarItem,
-                                                styles.hoverable,
-                                                styles.mystuffButton
-                                            )}
-                                        >
-                                            <img
-                                                className={styles.mystuffIcon}
-                                                src={mystuffIcon}
-                                            />
-                                        </div>
-                                    </a>
-                                ) : null}
-
-                                <AccountMenu
-                                    menuOpts={menuOpts}
-                                    username={this.props.username}
-                                    isRtl={this.props.isRtl}
-                                    onLogOut={this.props.onLogOut}
-                                    avatarBadge={this.props.avatarBadge}
-                                    depth={1}
-                                />
-                            </React.Fragment>
-                        ) : (
-                            // ********* user not logged in, but a session exists
-                            // ********* so they can choose to log in
-                            <React.Fragment>
-                                {menuOpts.canRegister ? (
-                                    <button
-                                        className={classNames(
-                                            styles.menuBarItem,
-                                            styles.hoverable
-                                        )}
-                                        key="join"
-                                        onClick={this.props.onOpenRegistration}
-                                    >
-                                        <FormattedMessage
-                                            defaultMessage="Join Scratch"
-                                            description="Link for creating a Scratch account"
-                                            id="gui.menuBar.joinScratch"
-                                        />
-                                    </button>
-                                ) : null}
-
-                                {menuOpts.canLogin ? (
-                                    <button
-                                        className={classNames(
-                                            styles.menuBarItem,
-                                            styles.hoverable
-                                        )}
-                                        key="login"
-                                        onMouseUp={this.props.onClickLogin}
-                                        onClick={this.props.onClickLogin}
-                                    >
-                                        <FormattedMessage
-                                            defaultMessage="Sign in"
-                                            description="Link for signing in to your Scratch account"
-                                            id="gui.menuBar.signIn"
-                                        />
-                                        <LoginDropdown
-                                            className={classNames(styles.menuBarMenu)}
-                                            isOpen={this.props.loginMenuOpen}
-                                            isRtl={this.props.isRtl}
-                                            renderLogin={this.props.renderLogin}
-                                            onClose={this.props.onRequestCloseLogin}
-                                        />
-                                    </button>
-                                ) : null}
-                            </React.Fragment>
-                        )
-                    ) : (
-                        // ******** no login session is available, so don't show login stuff
-                        <React.Fragment>
-                            {this.props.showComingSoon ? (
-                                <React.Fragment>
-                                    <MenuBarItemTooltip id="mystuff">
-                                        <div
-                                            className={classNames(
-                                                styles.menuBarItem,
-                                                styles.hoverable,
-                                                styles.mystuffButton
-                                            )}
-                                        >
-                                            <img
-                                                className={styles.mystuffIcon}
-                                                src={mystuffIcon}
-                                            />
-                                        </div>
-                                    </MenuBarItemTooltip>
-                                    <MenuBarItemTooltip
-                                        id="account-nav"
-                                        place={this.props.isRtl ? 'right' : 'left'}
-                                    >
-                                        <div
-                                            className={classNames(
-                                                styles.menuBarItem,
-                                                styles.hoverable,
-                                                styles.accountNavMenu
-                                            )}
-                                        >
-                                            <img
-                                                className={styles.profileIcon}
-                                                src={profileIcon}
-                                            />
-                                            <span>
-                                                {'scratch-cat'}
-                                            </span>
-                                            <img
-                                                className={styles.dropdownCaretIcon}
-                                                src={dropdownCaret}
-                                            />
-                                        </div>
-                                    </MenuBarItemTooltip>
-                                </React.Fragment>
-                            ) : []}
-                        </React.Fragment>
-                    )}
-                </div>
-
+                
                 {this.props.onClickAbout && (
                     <AboutMenu
                         onClick={this.props.onClickAbout}
